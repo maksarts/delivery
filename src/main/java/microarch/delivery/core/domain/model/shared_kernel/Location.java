@@ -19,7 +19,7 @@ public class Location extends ValueObject<Location> {
 
     public Location(int x, int y) {
         if (x < MIN_COORDINATE || y < MIN_COORDINATE) {
-            throw new IllegalArgumentException("Location coordinates must greater than " + MIN_COORDINATE);
+            throw new IllegalArgumentException("Location coordinates must be greater than " + MIN_COORDINATE);
         }
         if (x > MAX_COORDINATE || y > MAX_COORDINATE) {
             throw new IllegalArgumentException("Location coordinates must be less than " + MAX_COORDINATE);
@@ -31,6 +31,11 @@ public class Location extends ValueObject<Location> {
     public int distanceTo(Location location) {
         return Math.abs(x - location.x) + Math.abs(y - location.y);
     }
+
+    public int chebyshevDistanceTo(Location location) {
+        return Math.max(Math.abs(this.x - location.x), Math.abs(this.y - location.y));
+    }
+
 
     @Override
     protected Iterable<Object> equalityComponents() {
