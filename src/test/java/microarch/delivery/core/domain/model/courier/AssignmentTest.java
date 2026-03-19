@@ -40,12 +40,9 @@ class AssignmentTest {
     }
 
     @Test
-    void complete_WithNullLocation_ReturnsFailure() {
+    void complete_WithNullLocation_ThrowsException() {
         Assignment assignment = createAssignment();
-
-        UnitResult<Error> result = assignment.complete(null);
-        assertTrue(result.isFailure());
-        assertEquals("invalid_location", result.getError().getCode());
+        assertThrows(IllegalArgumentException.class, () -> assignment.complete(null));
     }
 
     @Test

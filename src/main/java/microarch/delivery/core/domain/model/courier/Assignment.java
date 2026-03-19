@@ -31,8 +31,7 @@ public class Assignment extends BaseEntity<UUID> {
 
     public UnitResult<Error> complete(Location currLocation) {
         if (currLocation == null) {
-            return UnitResult.failure(
-                    Error.of("invalid_location", "Current location cannot be null"));
+            throw new IllegalArgumentException("Current location must be specified");
         }
         if (location.chebyshevDistanceTo(currLocation) > 1) {
             return UnitResult.failure(
