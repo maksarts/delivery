@@ -13,17 +13,16 @@ import microarch.delivery.core.domain.model.shared_kernel.Location;
  */
 @Getter
 public class Assignment extends BaseEntity<UUID> {
-    private final UUID id;
     private final UUID orderId;
     private final Volume volume;
     private final Location location;
     private Status status;
 
     public Assignment(UUID orderId, Volume volume, Location location) {
+        super(UUID.randomUUID());
         if (orderId == null || volume == null || location == null) {
             throw new IllegalArgumentException("Assignment must have orderId, volume and location");
         }
-        this.id = UUID.randomUUID();
         this.orderId = orderId;
         this.volume = volume;
         this.location = location;
