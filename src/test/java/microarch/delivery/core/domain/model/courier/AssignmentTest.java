@@ -34,9 +34,9 @@ class AssignmentTest {
 
     @Test
     void constructor_WithInvalidParameters() {
-        assertThrows(IllegalArgumentException.class, () -> new Assignment(null, volume, location));
-        assertThrows(IllegalArgumentException.class, () -> new Assignment(orderId, null, location));
-        assertThrows(IllegalArgumentException.class, () -> new Assignment(orderId, volume, null));
+        assertThrows(IllegalArgumentException.class, () -> Assignment.createNew(null, volume, location));
+        assertThrows(IllegalArgumentException.class, () -> Assignment.createNew(orderId, null, location));
+        assertThrows(IllegalArgumentException.class, () -> Assignment.createNew(orderId, volume, null));
     }
 
     @Test
@@ -91,7 +91,7 @@ class AssignmentTest {
     }
 
     private Assignment createAssignment() {
-        return new Assignment(orderId, volume, location);
+        return Assignment.createNew(orderId, volume, location);
     }
 
 }
