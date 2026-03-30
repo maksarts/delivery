@@ -36,7 +36,6 @@ public class Location extends ValueObject<Location> {
         return Math.max(Math.abs(this.x - location.x), Math.abs(this.y - location.y));
     }
 
-
     @Override
     protected Iterable<Object> equalityComponents() {
         return List.of(x, y);
