@@ -71,4 +71,22 @@ class CourierTest {
         courier.moveTo(new Location(4, 3));
         assertTrue(courier.completeAssignment(assignmentId).isSuccess());
     }
+
+    @Test
+    void assigmentSuccessfullyDeletedAfterComplete() {
+        Courier courier = Courier.createNew("Vasya", new Location(2, 2));
+        Order order1 = Order.createNew(UUID.randomUUID(), new Location(4, 4), new Volume(5));
+        Order order2 = Order.createNew(UUID.randomUUID(), new Location(9, 9), new Volume(5));
+        UUID assignmentId1 = courier.assign(order1).getValueOrThrow();
+        UUID assignmentId2 = courier.assign(order2).getValueOrThrow();
+
+        assertEquals(2, courier.getAssignments().size());
+
+        courier.moveTo(new Location(4, 3));
+
+        assertTrue(courier.completeAssignment(assignmentId1).isSuccess());
+        assertEquals(1, courier.getAssignments().size());
+        assertTrue(courier.getAssignments().stream().anyMatch(a -> a.getId().equals(assignmentId2)));
+        assertFalse(courier.getAssignments().stream().anyMatch(a -> a.getId().equals(assignmentId1)));
+    }
 }

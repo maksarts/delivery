@@ -75,6 +75,7 @@ public class Courier extends Aggregate<UUID> {
         if (result.isFailure()) {
             return result;
         }
+        assignments.remove(assignment);
         return UnitResult.success();
     }
 
