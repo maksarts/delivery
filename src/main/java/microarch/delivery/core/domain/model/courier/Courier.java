@@ -5,31 +5,55 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import libs.ddd.Aggregate;
 import libs.errs.Error;
 import libs.errs.Result;
 import libs.errs.UnitResult;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import microarch.delivery.core.domain.model.order.Order;
 import microarch.delivery.core.domain.model.shared_kernel.Location;
 
 /**
  * @author maksimarts
  */
+@Entity
+@Table(name = "couriers")
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 public class Courier extends Aggregate<UUID> {
 
     private static final Volume MAX_VOLUME = new Volume(20);
 
-    private final String name;
-    private final List<Assignment> assignments;
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "courier_id", nullable = false)
+    private final List<Assignment> assignments = new ArrayList<>();
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "location_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "location_y"))
+    })
     private Location currLocation;
 
     private Courier(UUID id, String name, Location currLocation) {
         super(id);
         this.currLocation = currLocation;
         this.name = name;
-        this.assignments = new ArrayList<>();
     }
 
     public static Courier createNew(String name, Location location) {

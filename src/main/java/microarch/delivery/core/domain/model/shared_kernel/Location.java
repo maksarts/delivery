@@ -2,20 +2,29 @@ package microarch.delivery.core.domain.model.shared_kernel;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import libs.ddd.ValueObject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author maksimarts
  */
+@Embeddable
 @Getter
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Location extends ValueObject<Location> {
 
     public static final int MIN_COORDINATE = 1;
     public static final int MAX_COORDINATE = 10;
 
-    private final int x;
-    private final int y;
+    @Column(name = "location_x")
+    private int x;
+
+    @Column(name = "location_y")
+    private int y;
 
     public Location(int x, int y) {
         if (x < MIN_COORDINATE || y < MIN_COORDINATE) {
