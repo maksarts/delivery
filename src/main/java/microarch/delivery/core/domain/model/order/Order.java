@@ -2,21 +2,47 @@ package microarch.delivery.core.domain.model.order;
 
 import java.util.UUID;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import libs.ddd.Aggregate;
 import libs.errs.Error;
 import libs.errs.UnitResult;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import microarch.delivery.core.domain.model.courier.Volume;
 import microarch.delivery.core.domain.model.shared_kernel.Location;
 
 /**
  * @author maksimarts
  */
+@Entity
+@Table(name = "orders")
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @Getter
 public class Order extends Aggregate<UUID> {
 
-    private final Location location;
-    private final Volume volume;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "location_x")),
+            @AttributeOverride(name = "y", column = @Column(name = "location_y"))
+    })
+    private Location location;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "value", column = @Column(name = "volume_value"))
+    })
+    private Volume volume;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private OrderStatus status;
 
     private Order(UUID id, Location location, Volume volume) {

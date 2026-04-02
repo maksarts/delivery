@@ -2,16 +2,23 @@ package microarch.delivery.core.domain.model.courier;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import libs.ddd.ValueObject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author maksimarts
  */
 @Getter
+@Embeddable
+@NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class Volume extends ValueObject<Volume> {
 
-    private final int value;
+    @Column(name = "volume_value")
+    private int value;
 
     public Volume(int value) {
         if (value < 0) {
