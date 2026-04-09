@@ -63,13 +63,13 @@ class CourierTest {
     void courierCanCompleteAssignmentOnlyIfCloseToOrder() {
         Courier courier = Courier.createNew("Vasya", new Location(2, 2));
         Order order = Order.createNew(UUID.randomUUID(), new Location(4, 4), new Volume(5));
-        UUID assignmentId = courier.assign(order).getValueOrThrow();
+        courier.assign(order).getValueOrThrow();
 
         courier.moveTo(new Location(2, 2));
-        assertTrue(courier.completeAssignment(assignmentId).isFailure());
+        assertTrue(courier.completeAssignment(order.getId()).isFailure());
 
         courier.moveTo(new Location(4, 3));
-        assertTrue(courier.completeAssignment(assignmentId).isSuccess());
+        assertTrue(courier.completeAssignment(order.getId()).isSuccess());
     }
 
     @Test
@@ -77,16 +77,16 @@ class CourierTest {
         Courier courier = Courier.createNew("Vasya", new Location(2, 2));
         Order order1 = Order.createNew(UUID.randomUUID(), new Location(4, 4), new Volume(5));
         Order order2 = Order.createNew(UUID.randomUUID(), new Location(9, 9), new Volume(5));
-        UUID assignmentId1 = courier.assign(order1).getValueOrThrow();
-        UUID assignmentId2 = courier.assign(order2).getValueOrThrow();
+        courier.assign(order1).getValueOrThrow();
+        courier.assign(order2).getValueOrThrow();
 
         assertEquals(2, courier.getAssignments().size());
 
         courier.moveTo(new Location(4, 3));
 
-        assertTrue(courier.completeAssignment(assignmentId1).isSuccess());
+        assertTrue(courier.completeAssignment(order1.getId()).isSuccess());
         assertEquals(1, courier.getAssignments().size());
-        assertTrue(courier.getAssignments().stream().anyMatch(a -> a.getId().equals(assignmentId2)));
-        assertFalse(courier.getAssignments().stream().anyMatch(a -> a.getId().equals(assignmentId1)));
+        assertTrue(courier.getAssignments().stream().anyMatch(a -> a.getOrderId().equals(order2.getId())));
+        assertFalse(courier.getAssignments().stream().anyMatch(a -> a.getOrderId().equals(order1.getId())));
     }
 }

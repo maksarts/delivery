@@ -89,11 +89,11 @@ public class Courier extends Aggregate<UUID> {
         return Result.success(assignment.getId());
     }
 
-    public UnitResult<Error> completeAssignment(UUID assignmentId) {
+    public UnitResult<Error> completeAssignment(UUID orderId) {
         Assignment assignment = assignments.stream()
-                .filter(a -> a.getId().equals(assignmentId))
+                .filter(a -> a.getOrderId().equals(orderId))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Assignment not found or belongs to another courier"));
+                .orElseThrow(() -> new NoSuchElementException("Assignment not found"));
 
         UnitResult<Error> result = assignment.complete(currLocation);
         if (result.isFailure()) {

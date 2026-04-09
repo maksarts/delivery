@@ -93,4 +93,27 @@ class OrderRepositoryTest extends AbstractPostgresIntegrationTest {
         assertEquals(OrderStatus.ASSIGNED, assignedOrders.get(0).getStatus());
     }
 
+    @Test
+    void findAllNotCompleted() {
+        Order order1 = Order.createNew(UUID.randomUUID(), new Location(1, 1), new Volume(1));
+        Order order2 = Order.createNew(UUID.randomUUID(), new Location(2, 2), new Volume(2));
+        Order order3 = Order.createNew(UUID.randomUUID(), new Location(2, 2), new Volume(2));
+
+        order1.assign();
+        order1.complete();
+
+        order2.assign();
+
+        orderRepository.save(order1);
+        orderRepository.save(order2);
+        orderRepository.save(order3);
+
+        List<Order> assignedOrders = orderRepository.findAllNotCompleted();
+
+        assertEquals(2, assignedOrders.size());
+        assertFalse(assignedOrders.contains(order1));
+        assertTrue(assignedOrders.contains(order2));
+        assertTrue(assignedOrders.contains(order3));
+    }
+
 }
