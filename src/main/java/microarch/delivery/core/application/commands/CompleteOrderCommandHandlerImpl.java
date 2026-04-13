@@ -10,6 +10,7 @@ import microarch.delivery.core.domain.model.order.Order;
 import microarch.delivery.core.ports.CourierRepository;
 import microarch.delivery.core.ports.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author maksimarts
@@ -21,6 +22,7 @@ public class CompleteOrderCommandHandlerImpl implements CompleteOrderCommandHand
     private final OrderRepository orderRepository;
     private final CourierRepository courierRepository;
 
+    @Transactional
     @Override
     public UnitResult<Error> handle(CompleteOrderCommand command) {
         Order order = orderRepository.findById(command.orderId())

@@ -20,9 +20,9 @@ public class CreateOrderCommandHandlerImpl implements CreateOrderCommandHandler 
     @Override
     public UnitResult<Error> handle(CreateOrderCommand command) {
         Order order = Order.createNew(
-                command.getOrderId(),
+                command.orderId(),
                 new Location(1, 1), //TODO использовать сервис Geo в следующих модулях
-                command.getVolume()
+                command.volume()
         );
         orderRepository.save(order);
         return UnitResult.success();

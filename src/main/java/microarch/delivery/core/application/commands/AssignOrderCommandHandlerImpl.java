@@ -13,6 +13,7 @@ import microarch.delivery.core.domain.services.DispatcherService;
 import microarch.delivery.core.ports.CourierRepository;
 import microarch.delivery.core.ports.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author maksimarts
@@ -25,6 +26,7 @@ public class AssignOrderCommandHandlerImpl implements AssignOrderCommandHandler 
     private final OrderRepository orderRepository;
     private final DispatcherService dispatcherService;
 
+    @Transactional
     @Override
     public UnitResult<Error> handle(AssignOrderCommand command) {
         Optional<Order> orderO = orderRepository.findCreated();

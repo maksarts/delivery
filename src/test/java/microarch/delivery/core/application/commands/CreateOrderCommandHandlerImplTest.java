@@ -4,7 +4,9 @@ import java.util.UUID;
 
 import libs.errs.Error;
 import libs.errs.UnitResult;
+import microarch.delivery.core.domain.model.courier.Volume;
 import microarch.delivery.core.domain.model.order.Order;
+import microarch.delivery.core.domain.model.shared_kernel.Address;
 import microarch.delivery.core.ports.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,7 @@ class CreateOrderCommandHandlerImplTest {
     @Test
     void shouldSaveOrderOnHandle() {
         CreateOrderCommand command = new CreateOrderCommand(
-                UUID.randomUUID(), "test", "test", "test", "test", "test", 1);
+                UUID.randomUUID(), new Address("test", "test", "test", "test", "test"), new Volume(1));
 
         handler.handle(command);
 
@@ -40,7 +42,7 @@ class CreateOrderCommandHandlerImplTest {
     @Test
     void shouldReturnSuccessOnHandle() {
         CreateOrderCommand command = new CreateOrderCommand(
-                UUID.randomUUID(), "test", "test", "test", "test", "test", 1);
+                UUID.randomUUID(), new Address("test", "test", "test", "test", "test"), new Volume(1));
 
         UnitResult<Error> result = handler.handle(command);
 
