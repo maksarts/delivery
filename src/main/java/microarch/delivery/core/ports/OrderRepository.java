@@ -17,4 +17,6 @@ public interface OrderRepository {
     Optional<Order> findCreated();
 
     List<Order> findAllAssigned();
+
+    List<Order> findAllNotCompleted();
 }
